@@ -20,7 +20,7 @@
                 }
 ```
 
-##### Here `MoviesQuery` is defined like <FolderName><mutation/Query>
+##### Here `MoviesQuery` is defined like <FolderName>_<mutation/Query>
 ##### and your schema shuold contain a `type Query` (even on your server) like this ---
 #
 ```javascript
@@ -37,7 +37,7 @@
     }
 ```
 
-##### 5. Every fragment naming should be like <FileName><propsName> like this---
+##### 5. Every fragment naming should be like <FileName>_<propsName> like this---
 #
 ```javascript
   fragment MovieCard_movie on Movie{
