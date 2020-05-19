@@ -1,0 +1,54 @@
+
+
+   type Gener {
+       id: ID
+       name: String
+   }
+
+
+    type Movie{
+        id: ID
+        name: String
+        poster: String
+        release: String
+        rating: Float
+        time: String
+        generIds: [String]
+        gener: [Gener]
+        popularity: Int
+        description: String
+    }
+
+
+    enum Status {
+        ACTIVE
+        CLOSED
+    }
+
+    type Company {
+        id: ID
+        name: String
+        location: String
+        users: [User]
+
+    }
+
+    type User{
+        id: ID
+        name: String
+        age: Int
+        address: String
+        status: Status
+        comapny: Company
+    }
+
+    type Query{
+        User(id: ID): User
+        Company(id:ID): Company
+        Movie(id: ID): Movie
+        Movies:[Movie]
+    }
+
+    type schema{
+        query: Query
+    }
