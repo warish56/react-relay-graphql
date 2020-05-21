@@ -9,27 +9,24 @@
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
 type MovieList_response$ref = any;
-export type MoviesQueryVariables = {|
+export type MovieListQueryVariables = {|
   first: number,
   after?: ?string,
 |};
-export type MoviesQueryResponse = {|
+export type MovieListQueryResponse = {|
   +Movies: ?{|
     +$fragmentRefs: MovieList_response$ref
-  |},
-  +localMovieData: ?{|
-    +currentMovieCount: ?number
-  |},
+  |}
 |};
-export type MoviesQuery = {|
-  variables: MoviesQueryVariables,
-  response: MoviesQueryResponse,
+export type MovieListQuery = {|
+  variables: MovieListQueryVariables,
+  response: MovieListQueryResponse,
 |};
 */
 
 
 /*
-query MoviesQuery(
+query MovieListQuery(
   $first: Int!
   $after: String
 ) {
@@ -81,30 +78,7 @@ var v0 = [
     "type": "String"
   }
 ],
-v1 = {
-  "kind": "ClientExtension",
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "tempMovieStore",
-      "kind": "LinkedField",
-      "name": "localMovieData",
-      "plural": false,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "currentMovieCount",
-          "storageKey": null
-        }
-      ],
-      "storageKey": null
-    }
-  ]
-},
-v2 = [
+v1 = [
   {
     "kind": "Variable",
     "name": "after",
@@ -121,7 +95,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "MoviesQuery",
+    "name": "MovieListQuery",
     "selections": [
       {
         "alias": null,
@@ -138,8 +112,7 @@ return {
           }
         ],
         "storageKey": null
-      },
-      (v1/*: any*/)
+      }
     ],
     "type": "Query"
   },
@@ -147,7 +120,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "MoviesQuery",
+    "name": "MovieListQuery",
     "selections": [
       {
         "alias": null,
@@ -159,7 +132,7 @@ return {
         "selections": [
           {
             "alias": null,
-            "args": (v2/*: any*/),
+            "args": (v1/*: any*/),
             "concreteType": "MoviePage",
             "kind": "LinkedField",
             "name": "data",
@@ -280,7 +253,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v2/*: any*/),
+            "args": (v1/*: any*/),
             "filters": null,
             "handle": "connection",
             "key": "Movies_data",
@@ -289,20 +262,19 @@ return {
           }
         ],
         "storageKey": null
-      },
-      (v1/*: any*/)
+      }
     ]
   },
   "params": {
     "id": null,
     "metadata": {},
-    "name": "MoviesQuery",
+    "name": "MovieListQuery",
     "operationKind": "query",
-    "text": "query MoviesQuery(\n  $first: Int!\n  $after: String\n) {\n  Movies {\n    ...MovieList_response\n  }\n}\n\nfragment MovieCard_movie on Movie {\n  id\n  name\n  poster\n  rating\n}\n\nfragment MovieList_response on MoviesResult {\n  data(first: $first, after: $after) {\n    totalCount\n    pageInfo {\n      startCursor\n      endCursor\n      hasNextPage\n      hasPreviousPage\n    }\n    edges {\n      node {\n        ...MovieCard_movie\n        id\n        __typename\n      }\n      cursor\n    }\n  }\n}\n"
+    "text": "query MovieListQuery(\n  $first: Int!\n  $after: String\n) {\n  Movies {\n    ...MovieList_response\n  }\n}\n\nfragment MovieCard_movie on Movie {\n  id\n  name\n  poster\n  rating\n}\n\nfragment MovieList_response on MoviesResult {\n  data(first: $first, after: $after) {\n    totalCount\n    pageInfo {\n      startCursor\n      endCursor\n      hasNextPage\n      hasPreviousPage\n    }\n    edges {\n      node {\n        ...MovieCard_movie\n        id\n        __typename\n      }\n      cursor\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '48ae53d43f37785d207fbaee7383231e';
+(node/*: any*/).hash = '280d9994c40ca0a7d00d1c9d2bdf077d';
 
 module.exports = node;

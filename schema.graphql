@@ -5,6 +5,11 @@
        name: String
    }
 
+   type Votes{
+       likes: Int
+       dislikes: Int
+   }
+
 
     type Movie{
         id: ID
@@ -13,10 +18,37 @@
         release: String
         rating: Float
         time: String
+        votes: Votes
         generIds: [String]
         gener: [Gener]
         popularity: Int
         description: String
+    }
+
+    type PageInfo{
+        startCursor:String
+        endCursor: String
+        hasNextPage: Boolean!
+        hasPreviousPage: Boolean!
+    }
+
+
+
+    type MovieEdge{
+        cursor: String
+        node: Movie
+    }
+
+
+    type MoviePage{
+        totalCount: Int
+        edges: [MovieEdge]!
+        pageInfo: PageInfo
+        
+    }
+
+    type MoviesResult{
+        data(first: Int!, after: String): MoviePage
     }
 
 
@@ -46,9 +78,15 @@
         User(id: ID): User
         Company(id:ID): Company
         Movie(id: ID): Movie
-        Movies:[Movie]
+        Movies:MoviesResult
+    }
+
+    type Mutation{
+        likeMovie(movieId: ID!): Movie
+        disLikeMovie(movieId: ID!): Movie
     }
 
     type schema{
         query: Query
+        mutation: Mutation
     }

@@ -37,10 +37,15 @@ query DetailsQuery(
 }
 
 fragment Info_data on Movie {
+  id
   name
   release
   rating
   time
+  votes {
+    likes
+    dislikes
+  }
   gener {
     name
     id
@@ -73,14 +78,14 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "id",
   "storageKey": null
 },
 v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "name",
   "storageKey": null
 };
 return {
@@ -136,6 +141,7 @@ return {
             "storageKey": null
           },
           (v2/*: any*/),
+          (v3/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -160,13 +166,38 @@ return {
           {
             "alias": null,
             "args": null,
+            "concreteType": "Votes",
+            "kind": "LinkedField",
+            "name": "votes",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "likes",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "dislikes",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "concreteType": "Gener",
             "kind": "LinkedField",
             "name": "gener",
             "plural": true,
             "selections": [
-              (v2/*: any*/),
-              (v3/*: any*/)
+              (v3/*: any*/),
+              (v2/*: any*/)
             ],
             "storageKey": null
           },
@@ -176,8 +207,7 @@ return {
             "kind": "ScalarField",
             "name": "description",
             "storageKey": null
-          },
-          (v3/*: any*/)
+          }
         ],
         "storageKey": null
       }
@@ -188,7 +218,7 @@ return {
     "metadata": {},
     "name": "DetailsQuery",
     "operationKind": "query",
-    "text": "query DetailsQuery(\n  $id: ID\n) {\n  Movie(id: $id) {\n    ...MoviePoster_url\n    ...Info_data\n    id\n  }\n}\n\nfragment Info_data on Movie {\n  name\n  release\n  rating\n  time\n  gener {\n    name\n    id\n  }\n  description\n}\n\nfragment MoviePoster_url on Movie {\n  poster\n}\n"
+    "text": "query DetailsQuery(\n  $id: ID\n) {\n  Movie(id: $id) {\n    ...MoviePoster_url\n    ...Info_data\n    id\n  }\n}\n\nfragment Info_data on Movie {\n  id\n  name\n  release\n  rating\n  time\n  votes {\n    likes\n    dislikes\n  }\n  gener {\n    name\n    id\n  }\n  description\n}\n\nfragment MoviePoster_url on Movie {\n  poster\n}\n"
   }
 };
 })();
