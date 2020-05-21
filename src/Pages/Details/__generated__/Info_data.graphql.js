@@ -12,10 +12,15 @@ import type { FragmentReference } from "relay-runtime";
 declare export opaque type Info_data$ref: FragmentReference;
 declare export opaque type Info_data$fragmentType: Info_data$ref;
 export type Info_data = {|
+  +id: ?string,
   +name: ?string,
   +release: ?string,
   +rating: ?number,
   +time: ?string,
+  +votes: ?{|
+    +likes: ?number,
+    +dislikes: ?number,
+  |},
   +gener: ?$ReadOnlyArray<?{|
     +name: ?string
   |}>,
@@ -45,6 +50,13 @@ return {
   "metadata": null,
   "name": "Info_data",
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "id",
+      "storageKey": null
+    },
     (v0/*: any*/),
     {
       "alias": null,
@@ -65,6 +77,31 @@ return {
       "args": null,
       "kind": "ScalarField",
       "name": "time",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Votes",
+      "kind": "LinkedField",
+      "name": "votes",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "likes",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "dislikes",
+          "storageKey": null
+        }
+      ],
       "storageKey": null
     },
     {
@@ -91,6 +128,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '76ca8bd0dc9f53bd65a6e14e13889d1a';
+(node/*: any*/).hash = '0d6427130acb4c3e2c9562db9d3ae213';
 
 module.exports = node;

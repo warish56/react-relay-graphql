@@ -10,8 +10,8 @@
     align-items: flex-start;
     margin: 0 auto;
     flex-flow:  row wrap;
-    border: 1px red solid;
-   
+    /* border: 1px red solid; */
+   background-color: black;
     
 
 }
@@ -82,4 +82,20 @@
 .movie-rating-top{
     font-size: 28px;
     font-weight: bolder;
+}
+
+.load-button{
+    min-width: 80px;
+    min-height: 30px;
+    border-radius: 3px;
+    border: 1px #ffffff solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin:10px auto;
+    cursor: pointer;
+    color: #999;
+    font-size: 14px;  
+    font-weight: bold;
+    background-color: transparent;
 }

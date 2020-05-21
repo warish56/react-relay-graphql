@@ -1,0 +1,11 @@
+
+
+
+type tempMovieStore {
+ currentMovieCount: Int
+}
+
+extend type Query{
+    localMovieData: tempMovieStore
+}
+
