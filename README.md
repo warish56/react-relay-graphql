@@ -269,6 +269,22 @@ query MoviesQuery($first: Int!, $after: String){
 }
 `;
 ```
+##### or you can just fetch its `__typename` like this ----->
+### 
+```javascript
+
+const QUERY = graphql`
+query MoviesQuery{
+    Movie(id:1){
+        __typename
+    }
+    localMovieData{
+            currentMovieCount
+    }
+}
+`;
+```
+
 
 ##### 3.3 Remember after creating the schema you have to create a record manually from programming. like this ----
 
