@@ -1,8 +1,11 @@
 import React from 'react';
 import { createFragmentContainer} from 'react-relay'
-import graphql from 'babel-plugin-relay/macro'
+import graphql from 'babel-plugin-relay/macro';
+
+import Image from '../../Components/Image';
 
 import './style.css';
+import { IMAGE_URL } from '../../config';
 
 const MovieCard = ({ movie, onClick}) => {
     const {id, name, poster, rating,} = movie;
@@ -13,15 +16,18 @@ const MovieCard = ({ movie, onClick}) => {
         >
         <button
         onClick={() => onClick(id)}
-        style={{
-            backgroundImage: `url(${poster})`,
-            backgroundRepeat: 'no-repeat',
-            // background: `linear-gradient(133deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.3) 100%), url(${poster})`,
-             backgroundSize: 'cover',
-             backgroundPosition: 'center'
-        }} 
+        // style={{
+        //     backgroundImage: `url(${poster})`,
+        //     backgroundRepeat: 'no-repeat',
+        //     // background: `linear-gradient(133deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.3) 100%), url(${poster})`,
+        //      backgroundSize: 'cover',
+        //      backgroundPosition: 'center'
+        // }} 
         className="movie-card-content"
         >
+            <div className="movie-card-image-box">
+                <Image className="movie-card-image" src={`${IMAGE_URL}${poster}`} alt={name}/>
+            </div>
             <div className="movie-card-info">
               <span className="movie-name">{name}</span>  
             </div>
