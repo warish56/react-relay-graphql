@@ -357,3 +357,51 @@ export const createMovieCount = (initialMovieCount, retainQuery) => {
 
 ```
 
+
+### 4. Handeling Errors
+
+##### 4.1 whenever an error is occured during a request it will send a filed name `errors` in the resoponse. if no errors are sent then the `errors` field will be not present in the response.
+
+##### 
+
+```javascript
+{
+  "data": { ... },
+  "errors": [ ... ]
+}
+```
+
+##### 4.2 To handle errors in client side you should do like this  in your `environment` file -----
+
+##### 
+```javascript
+
+fetch(URL, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+                query: operation.text,
+                variables,
+            })
+       })
+        .then((res) => res.json())
+        .then((response) => {
+
+             // errors are handled here
+            if(response.errors){
+                throw response.errors;
+            }
+
+            if(isQuery && response){
+               cache.set(queryId,variables, response);
+            }
+
+            if(isMutation){
+                cache.clear();
+            }
+
+            return response;
+
+        })
+
+```

@@ -17,19 +17,25 @@ class MovieList extends React.PureComponent{
         super(props);
         this.state={
             itemsTofetch: 3,
+            fallbackData: [{id:1},{id:2},{id:3}],
+            isLoading: false
         }
     }
 
     componentDidMount(){
       const {localMovieData, response} = this.props;
       if( localMovieData && localMovieData.currentMovieCount !== response.data.edges.length ){
-        console.log("***************initiate load more**************")
         this.loadMore();
       }
     }
 
+    toggleLoading = (status) => {
+      this.setState({
+        isLoading: status
+      })
+    }
+  
    
-
 
     onMovieClick = (movieId) => {
       this.props.history.push(`/details/${movieId}`)
@@ -43,8 +49,9 @@ class MovieList extends React.PureComponent{
   }
 
   const {itemsTofetch} = this.state;
-  const {edges = []} = this.props.response.data
+  const {edges = []} = this.props.response.data;
 
+  this.toggleLoading(true);
   this.props.relay.loadMore(
    itemsTofetch,  // Fetch the next  items
     error => {
@@ -52,6 +59,7 @@ class MovieList extends React.PureComponent{
       console.log("==errro in loading more",error);
       return;
       }
+      this.toggleLoading(false);
       updateMovieCount(itemsTofetch + edges.length);
     },
   );
@@ -60,22 +68,29 @@ class MovieList extends React.PureComponent{
     render(){
 
         console.log("====Movie list==",this.props)
-        const {isLoading} = this.props.relay;
-        const loadingData = isLoading();
+        const {isLoading, fallbackData} = this.state;
+        const {response} = this.props;
             return (
                 <div className="movie-container">
                     {
-                        this.props.response.data.edges.map((item,index) => {
-                            return <MovieCard key={item.cursor} onClick={this.onMovieClick}  movie={item.node} />
+                        response ?
+                        response.data.edges.map((item) => {
+                            return <MovieCard  key={item.cursor} onClick={this.onMovieClick}  movie={item.node} />
 
                         })
+                        :
+                        null                        
                     }
                     {
-                        loadingData ?
-                        <p>Loading Please wait ....</p>
-                        :
-                        <button className="load-button" onClick={this.loadMore}>Load More</button>
+                      isLoading &&
+                      fallbackData.map((item,index) => {
+                        return <MovieCard isLoading={true} key={item.id}  />
+
+                    })
                     }
+
+                    <button className="load-button" onClick={this.loadMore}>Load More</button>
+                    
                     
 
                 </div>

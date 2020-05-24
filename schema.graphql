@@ -1,92 +1,118 @@
 
+type Gener {
+    id: ID
+    name: String
+}
 
-   type Gener {
-       id: ID
-       name: String
-   }
-
-   type Votes{
-       likes: Int
-       dislikes: Int
-   }
-
-
-    type Movie{
-        id: ID
-        name: String
-        poster: String
-        release: String
-        rating: Float
-        time: String
-        votes: Votes
-        generIds: [String]
-        gener: [Gener]
-        popularity: Int
-        description: String
-    }
-
-    type PageInfo{
-        startCursor:String
-        endCursor: String
-        hasNextPage: Boolean!
-        hasPreviousPage: Boolean!
-    }
+type Votes{
+    likes: Int
+    dislikes: Int
+}
 
 
+ type Movie{
+     id: ID
+     name: String
+     poster: String
+     release: String
+     rating: Float
+     time: String
+     votes: Votes
+     generIds: [String]
+     gener: [Gener]
+     popularity: Int
+     description: String
+ }
 
-    type MovieEdge{
-        cursor: String
-        node: Movie
-    }
+ type PageInfo{
+     startCursor:String
+     endCursor: String
+     hasNextPage: Boolean!
+     hasPreviousPage: Boolean!
+ }
 
 
-    type MoviePage{
-        totalCount: Int
-        edges: [MovieEdge]!
-        pageInfo: PageInfo
-        
-    }
 
-    type MoviesResult{
-        data(first: Int!, after: String): MoviePage
-    }
+ type MovieEdge{
+     cursor: String
+     node: Movie
+ }
 
 
-    enum Status {
-        ACTIVE
-        CLOSED
-    }
+ type MoviePage{
+     totalCount: Int
+     edges: [MovieEdge]!
+     pageInfo: PageInfo
+     
+ }
 
-    type Company {
-        id: ID
-        name: String
-        location: String
-        users: [User]
+ type MoviesResult{
+     data(first: Int!, after: String): MoviePage
+ }
 
-    }
 
-    type User{
-        id: ID
-        name: String
-        age: Int
-        address: String
-        status: Status
-        comapny: Company
-    }
 
-    type Query{
-        User(id: ID): User
-        Company(id:ID): Company
-        Movie(id: ID): Movie
-        Movies:MoviesResult
-    }
 
-    type Mutation{
-        likeMovie(movieId: ID!): Movie
-        disLikeMovie(movieId: ID!): Movie
-    }
 
-    type schema{
-        query: Query
-        mutation: Mutation
-    }
+
+type UsersPageInfo{
+    startCursor:String
+    endCursor: String
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+}
+
+
+type UserEdge{
+    cursor: String
+    node: User
+}
+
+type UserListType{
+totalCount: Int
+pageInfo: UsersPageInfo
+edges: [UserEdge]!
+}
+
+type UsersResponse{
+data(first: Int!, after: ID): UserListType
+}
+
+input UserInput {
+    name: String
+    email: String
+    phone: String
+    password: String
+}
+type UserResponse{
+    user: User
+    token : String
+}
+
+
+type User{
+    id: ID
+    name: String
+    email: String
+    phone: String
+    password: String
+}
+
+
+type Query{
+    User(email: String, password: String): UserResponse
+    Movie(id: ID): Movie
+    Movies:MoviesResult
+}
+
+type Mutation{
+    likeMovie(movieId: ID!): Movie
+    disLikeMovie(movieId: ID!): Movie
+    User(data: UserInput): UserResponse
+
+}
+
+type schema{
+    query: Query
+    mutation: Mutation
+}

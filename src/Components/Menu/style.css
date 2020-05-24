@@ -1,0 +1,25 @@
+
+
+.menu-container{
+    position: absolute;
+    top: var(--navbar-height);
+    right: 0;
+    width: 100px;
+    background-color: black;
+    border: 1px red solid;
+    padding: 15px 0;
+}
+
+
+.menu-container > *:hover{
+    background-color: lightgray;
+}
+
+.menu-item{
+    width: auto;
+    min-height: 30px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: white;
+}
