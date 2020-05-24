@@ -1,6 +1,5 @@
 import React from 'react';
 import { QueryRenderer} from 'react-relay';
-import {getRequest, createOperationDescriptor} from 'relay-runtime'
 import graphql from 'babel-plugin-relay/macro'
 
 import MovieList from './MovieList';
@@ -37,15 +36,12 @@ class Movies extends React.Component{
         
     }
 
-   
 
-
-    retainTheQuery = () => {
+    componentDidMount(){
         const {initialFetchItems} = this.state;
-        const request = getRequest(QUERY);
-        const operation = createOperationDescriptor(request, {first: initialFetchItems} /* variables */); 
-        const disposable = environment.retain(operation);
+        createMovieCount(initialFetchItems , {query: QUERY, variables:{first: initialFetchItems}}); 
     }
+   
 
 
 
@@ -57,7 +53,7 @@ class Movies extends React.Component{
             environment={environment}
             query={QUERY}
             variables={{first: initialFetchItems}}
-            render={({error, props}) => {
+            render={({error, props={}}) => {
                 if(error){
                     console.log("===got error in fetching===",error)
                 }
@@ -65,10 +61,10 @@ class Movies extends React.Component{
                 if(!props){
                     return <h1>Loading....</h1>
                 }
-                createMovieCount(initialFetchItems , this.retainTheQuery);
+
                 console.log("====props in conatiner===",props)
                 return (
-                    <MovieList localMovieData={props.localMovieData} response={props.Movies}/>
+                    <MovieList localMovieData={props.localMovieData} response={props.Movies }/>
                 )
                 
             }}

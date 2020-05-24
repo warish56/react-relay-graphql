@@ -6,8 +6,14 @@ import {
     QueryResponseCache
   } from 'relay-runtime';
 
+  import {isTokenPresent} from '../helpers'
 
-  const cache = new QueryResponseCache({size: 1024, ttl: 1000 * 60 * 60})
+
+  const cache = new QueryResponseCache({size: 1024, ttl: 1000 * 60 * 60});
+
+  const FETCH_AUTHORIZED_URL = '/graphql/authorized' ;
+  const FETCH_UN_AUTHORIZED_URL = '/graphql/un_authorized';
+
 
   const fetchQuery = (operation, variables, cacheConfig) => {
 
@@ -23,30 +29,41 @@ import {
         return dataFromCache;
     }
 
+    const token = isTokenPresent(); 
+    const URL = token ? FETCH_AUTHORIZED_URL : FETCH_UN_AUTHORIZED_URL ;
+    const headers = {
+        'Content-Type': 'application/json',
+    };
+
+    if(token){
+        headers['x-access-token'] = token;
+    }
 
     return (
-    fetch('/graphql', {
+    fetch(URL, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers,
             body: JSON.stringify({
                 query: operation.text,
                 variables,
             })
        })
         .then((res) => res.json())
-        .then((data) => {
+        .then((response) => {
 
-            if(isQuery && data){
-               cache.set(queryId,variables, data);
+            if(response.errors){
+                throw response.errors;
+            }
+
+            if(isQuery && response){
+               cache.set(queryId,variables, response);
             }
 
             if(isMutation){
                 cache.clear();
             }
 
-            return data;
+            return response;
 
         })
     )

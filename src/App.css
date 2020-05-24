@@ -1,6 +1,7 @@
 .App {
   text-align: center;
   background-color: black;
+  margin-top: var( --navbar-height);
 }
 
 .App-logo {
@@ -21,6 +22,44 @@ button{
   }
   100%{
     transform: scale(1);
+  }
+}
+
+@keyframes hide{
+  0%{
+   transform: scale(1);
+  }
+  50%{
+    transform: scale(0.5);
+  }
+  100%{
+    transform: scale(0);
+    display: none;
+  }
+}
+
+@keyframes show{
+  0%{
+   transform: scale(0);
+  }
+  50%{
+    transform: scale(0.5);
+  }
+  100%{
+    transform: scale(1);
+    display: flex ;
+  }
+}
+
+@keyframes glow{
+  0%{
+   opacity: 1;
+  }
+  50%{
+    opacity: 0.5;
+  }
+  100%{
+    opacity: 1;
   }
 }
 

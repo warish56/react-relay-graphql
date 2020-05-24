@@ -7,34 +7,34 @@ import Image from '../../Components/Image';
 import './style.css';
 import { IMAGE_URL } from '../../config';
 
-const MovieCard = ({ movie, onClick}) => {
-    const {id, name, poster, rating,} = movie;
-    
+const MovieCard = ({ movie, onClick, isLoading = false}) => {
+  
+    const {id, name, poster, rating,} = movie || {};    
     return (
         <div
         className="movie-card"
         >
         <button
-        onClick={() => onClick(id)}
-        // style={{
-        //     backgroundImage: `url(${poster})`,
-        //     backgroundRepeat: 'no-repeat',
-        //     // background: `linear-gradient(133deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.3) 100%), url(${poster})`,
-        //      backgroundSize: 'cover',
-        //      backgroundPosition: 'center'
-        // }} 
-        className="movie-card-content"
+        onClick={!isLoading ?  () => onClick(id): null}
+        className={isLoading ? 'movie-card-loading' : 'movie-card-content'}
         >
-            <div className="movie-card-image-box">
-                <Image className="movie-card-image" src={`${IMAGE_URL}${poster}`} alt={name}/>
-            </div>
-            <div className="movie-card-info">
-              <span className="movie-name">{name}</span>  
-            </div>
+            {
+                !isLoading &&
+        
+            <>
+                <div className="movie-card-image-box">
+                    <Image className="movie-card-image" src={`${IMAGE_URL}${poster}`} alt={name}/>
+                </div>
+                <div className="movie-card-info">
+                    <span className="movie-name">{name}</span>  
+                </div>
 
-             <div className="rating-box">
-                <span className="movie-rating"><span className="movie-rating-top">{rating}/</span>10</span>
-             </div>
+                <div className="rating-box">
+                    <span className="movie-rating"><span className="movie-rating-top">{rating}/</span>10</span>
+                </div>
+            </>
+
+            }
         </button>
         </div>
     )
