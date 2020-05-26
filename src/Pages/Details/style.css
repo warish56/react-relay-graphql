@@ -118,3 +118,46 @@
 .backBox:active,.backBox:focus{
     animation: bubble 0.2s ease forwards ;
 }
+
+.eidt-button{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 50px;
+    height: 50px;
+    border: 2px white solid ;
+    background-color: rgba(0,0,0,0.4);
+    color: white;
+    font-size: 20px;
+    border-radius: 50%;
+
+}
+input{
+    box-sizing: border-box;
+
+}
+
+.edit-name-input, .edit-description-input, .edit-small-input{
+    border-radius: 6px;
+    margin: 10px 0;
+    padding: 10px;
+}
+
+.edit-name-input{
+    width: 80%;
+    height: 60px;
+    font-size: 25px;
+
+}
+
+.edit-description-input{
+    width: 80%;
+    font-size: 14px;
+
+}
+
+.edit-small-input{
+    width: 100px;
+    height: 30px;
+    margin: 10px;
+}

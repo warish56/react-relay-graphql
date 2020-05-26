@@ -7,21 +7,57 @@ import Image from '../../Components/Image'
 import './style.css';
 import { IMAGE_URL } from '../../config';
 
-const MoviePoster = (props) => {
-    console.log("===poster props===",props)
-    const {poster} = props.url;
+import {updateMoviePoster} from '../../Mutations/Movies'
+
+class MoviePoster extends React.PureComponent{
+
+    constructor(props){
+        super(props);
+        this.state={
+            localImage: null
+        }
+    }
+
+    componentDidUpdate(prevProps){
+        if(prevProps.isEditMode !== this.props.isEditMode && prevProps.isEditMode=== true && this.props.isEditMode === false){
+          this.updateData();
+        }
+    }
+
+
+    onFileChange = (e) => {
+        const {files} = e.target
+      this.setState({
+          localImage: files[0]
+      })
+    }
+
+    updateData = () => {
+        const {id} = this.props.data;
+
+       updateMoviePoster(id,{poster:this.state.localImage});
+    }
+
+    render(){
+    console.log("===poster props===",this.props)
+    const {data, isEditMode} = this.props
+    const {poster} = data;
+    const {localImage} = this.state;
 
     return (
-        <div className="movie-poster">
+        <label htmlFor={isEditMode ? "image-poster": ''} className="movie-poster">
             <Image className="movie-poster-img" src={`${IMAGE_URL}${poster}`} alt="movie banner" />
-        </div>
+            <input style={{display: 'none'}} id="image-poster" accept="image/*" onChange={this.onFileChange} type="file"/>
+        </label>
     )
+    }
 };
 
 
 export default createFragmentContainer(MoviePoster,{
-    url:graphql`
-    fragment MoviePoster_url on Movie{
+    data:graphql`
+    fragment MoviePoster_data on Movie{
+        id
         poster
     }`
 });

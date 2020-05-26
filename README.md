@@ -405,3 +405,115 @@ fetch(URL, {
         })
 
 ```
+
+### 5. Handeling File upload
+
+##### 5.1 In order to uplaod a file while using `commitMutation` , you have to pass an object name `uploadables` to the config parameter of `commitMutation` like this-----
+
+##### 
+
+```javascript
+export const updateMoviePoster = (id,imageObj) => {
+
+    const mutation = graphql`
+    mutation Movies_poster_update_Mutation($movieData:MovieInput){
+        updateMovie(movieData: $movieData){
+              poster
+        }
+    }
+    
+    `
+
+    return commitMutation(environment, {
+        mutation,
+        variables:{movieData:{id} },
+        uploadables:imageObj  //    accepting imageFile
+    })
+
+}
+
+```
+
+
+##### the imageObj should be of type { fieldName : file }
+##### here fieldName is the key with which you will identify the image comeing over serve using `multer` in node.js
+
+##### 5.2 since we are sending an image over network so we have send a `formData` instead of json. so we have to change our `fetchQuery` in `environment` file like this -------- 
+
+###### and also now `fetchQuery` will recieve an `uploadables` object as last parameter from from `commitMutation`
+
+```javascript
+const fetchQuery = (operation, variables, cacheConfig, uploadables) => {
+
+    const queryId = operation.text;
+    const isMutation = operation.operationKind === 'mutation';
+    const isQuery = operation.operationKind === 'query';
+    const isForceFetch = cacheConfig && cacheConfig.force;
+    const isFormData = !!uploadables;  //   checking if it conatains any file or not
+    const formData = new FormData();
+
+    const dataFromCache = cache.get(queryId,variables);
+    
+    if(isQuery && dataFromCache && !isForceFetch){
+        console.log("====already there===")
+        return dataFromCache;
+    }
+
+    const token = isTokenPresent(); 
+    const URL = token ? FETCH_AUTHORIZED_URL : FETCH_UN_AUTHORIZED_URL ;
+    const headers = {};
+    let body = null;
+
+    if(token){
+        headers['x-access-token'] = token;
+    }
+
+    if(isFormData){
+        /*===== do not add this header while sending form Data (i know its obvious, but still cant find the reason)*/
+        //headers['Content-Type'] = 'multipart/form-data'; 
+
+        formData.append('query',operation.text);
+        formData.append('variables', JSON.stringify(variables));
+
+        //  assigning each file to formData with its respective key
+        Object.keys(uploadables).forEach((key) => {
+          formData.append(key, uploadables[key])
+        });
+
+        body = formData;
+
+    }else{
+        headers['Content-Type'] = 'application/json';
+        body = JSON.stringify({
+            query: operation.text,
+            variables,
+        });
+    }
+
+    return (
+    fetch(URL, {
+            method: 'POST',
+            headers,
+            body,
+       })
+        .then((res) => res.json())
+        .then((response) => {
+
+            if(response.errors){
+                throw response.errors;
+            }
+
+            if(isQuery && response){
+               cache.set(queryId,variables, response);
+            }
+
+            if(isMutation){
+                cache.clear();
+            }
+
+            return response;
+
+        })
+    )
+  };
+```

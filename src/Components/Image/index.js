@@ -13,6 +13,7 @@ class Image extends React.PureComponent{
           url: null
         }
         this.imageRef = React.createRef();
+
     }
 
     componentDidMount(){
@@ -20,7 +21,35 @@ class Image extends React.PureComponent{
             this.setState({
                 url:cache[this.props.src]
             })
+        }else{
+            this.downloadImage();
         }
+
+    }
+
+
+
+    componentDidUpdate(prevProps){
+        if(prevProps.src !== this.props.src){
+         this.downloadImage();
+        }
+    }
+
+
+    downloadImage = async () => {
+        let blob = await fetch(this.props.src).then(r => r.blob());
+        let dataUrl = await new Promise(resolve => {
+          let reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.readAsDataURL(blob);
+        });
+    
+        this.setState({
+            url:dataUrl
+        })
+    
+        cache[this.props.src] = dataUrl;
+
     }
 
  
@@ -29,18 +58,7 @@ class Image extends React.PureComponent{
     //  ======= 1st method using File Reader=======
 
 
-        let blob = await fetch(this.props.src).then(r => r.blob());
-    let dataUrl = await new Promise(resolve => {
-      let reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.readAsDataURL(blob);
-    });
-
-    this.setState({
-        url:dataUrl
-    })
-
-    cache[this.props.src] = dataUrl;
+      this.downloadImage();
 
 
     //  ======= 2nd method using canvas=======
@@ -73,7 +91,7 @@ class Image extends React.PureComponent{
         const {src, ...otherProps} = this.props;
        const {url} =  this.state;
 
-        return <img {...otherProps} ref={this.imageRef} onLoad={this.onImageLoad} src={url || src} />
+        return <img {...otherProps} ref={this.imageRef}  src={url || src} />
     }
 }
 export default Image;
