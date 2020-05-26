@@ -50,6 +50,14 @@ type Votes{
      data(first: Int!, after: String): MoviePage
  }
 
+ input MovieInput{
+    id: ID!
+    name: String
+    release: String
+    time: String
+    description: String
+ }
+
 
 
 
@@ -108,7 +116,9 @@ type Query{
 type Mutation{
     likeMovie(movieId: ID!): Movie
     disLikeMovie(movieId: ID!): Movie
+    updateMovie(movieData: MovieInput):Movie
     User(data: UserInput): UserResponse
+
 
 }
 

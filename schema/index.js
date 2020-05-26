@@ -13,7 +13,9 @@ type Query{
 type Mutation{
     likeMovie(movieId: ID!): Movie
     disLikeMovie(movieId: ID!): Movie
+    updateMovie(movieData: MovieInput):Movie
     User(data: UserInput): UserResponse
+
 
 }
 

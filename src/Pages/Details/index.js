@@ -6,6 +6,9 @@ import environment from '../../RelayEnvironment'
 import MoviePoster from './MoviePoster';
 import Info from './Info';
 
+import Icon from '../../Components/Icon';
+
+
 import './style.css';
 
 class Detail extends React.Component{
@@ -13,10 +16,17 @@ class Detail extends React.Component{
     constructor(props){
         super(props);
         this.state={
-           isUnmounted: false
+           isUnmounted: false,
+           isEditMode: false
         }
     }
 
+
+    toggleEditMode = ()=>{
+    this.setState((prevState) => ({
+       isEditMode: !prevState.isEditMode
+    }))
+    }
 
     goBack = () => {
         setTimeout(() => {
@@ -32,7 +42,7 @@ class Detail extends React.Component{
 
 
     render(){
-        const {isUnmounted} = this.state;
+        const {isUnmounted, isEditMode} = this.state;
         return(
 
             <QueryRenderer 
@@ -41,7 +51,7 @@ class Detail extends React.Component{
 
               query DetailsQuery($id: ID){
                  Movie(id: $id){
-                     ...MoviePoster_url
+                     ...MoviePoster_data
                      ...Info_data
                  }
               }
@@ -62,8 +72,14 @@ class Detail extends React.Component{
 
                 return (
                     <div className={`detail-container ${isUnmounted? 'move-down': ''}`}>
-                        <MoviePoster url={props.Movie}/>
-                        <Info onBack={this.goBack} data={props.Movie} />
+                        <MoviePoster isEditMode={isEditMode} data={props.Movie}/>
+                        <Info isEditMode={isEditMode} onBack={this.goBack} data={props.Movie} />
+
+                        
+                           <button onClick={this.toggleEditMode} className="eidt-button">
+                             <Icon name={ isEditMode ? 'save': "edit"}/>
+                           </button>
+                        
                     </div>
                 )
 

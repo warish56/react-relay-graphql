@@ -51,6 +51,14 @@ type Votes{
      data(first: Int!, after: String): MoviePage
  }
 
+ input MovieInput{
+    id: ID!
+    name: String
+    release: String
+    time: String
+    description: String
+ }
+
 
 `;
 

@@ -9,13 +9,13 @@
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
 type Info_data$ref = any;
-type MoviePoster_url$ref = any;
+type MoviePoster_data$ref = any;
 export type DetailsQueryVariables = {|
   id?: ?string
 |};
 export type DetailsQueryResponse = {|
   +Movie: ?{|
-    +$fragmentRefs: MoviePoster_url$ref & Info_data$ref
+    +$fragmentRefs: MoviePoster_data$ref & Info_data$ref
   |}
 |};
 export type DetailsQuery = {|
@@ -30,7 +30,7 @@ query DetailsQuery(
   $id: ID
 ) {
   Movie(id: $id) {
-    ...MoviePoster_url
+    ...MoviePoster_data
     ...Info_data
     id
   }
@@ -53,7 +53,8 @@ fragment Info_data on Movie {
   description
 }
 
-fragment MoviePoster_url on Movie {
+fragment MoviePoster_data on Movie {
+  id
   poster
 }
 */
@@ -106,7 +107,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "MoviePoster_url"
+            "name": "MoviePoster_data"
           },
           {
             "args": null,
@@ -133,6 +134,7 @@ return {
         "name": "Movie",
         "plural": false,
         "selections": [
+          (v2/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -140,7 +142,6 @@ return {
             "name": "poster",
             "storageKey": null
           },
-          (v2/*: any*/),
           (v3/*: any*/),
           {
             "alias": null,
@@ -218,11 +219,11 @@ return {
     "metadata": {},
     "name": "DetailsQuery",
     "operationKind": "query",
-    "text": "query DetailsQuery(\n  $id: ID\n) {\n  Movie(id: $id) {\n    ...MoviePoster_url\n    ...Info_data\n    id\n  }\n}\n\nfragment Info_data on Movie {\n  id\n  name\n  release\n  rating\n  time\n  votes {\n    likes\n    dislikes\n  }\n  gener {\n    name\n    id\n  }\n  description\n}\n\nfragment MoviePoster_url on Movie {\n  poster\n}\n"
+    "text": "query DetailsQuery(\n  $id: ID\n) {\n  Movie(id: $id) {\n    ...MoviePoster_data\n    ...Info_data\n    id\n  }\n}\n\nfragment Info_data on Movie {\n  id\n  name\n  release\n  rating\n  time\n  votes {\n    likes\n    dislikes\n  }\n  gener {\n    name\n    id\n  }\n  description\n}\n\nfragment MoviePoster_data on Movie {\n  id\n  poster\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'ef10532966f749d06f7041216f80c0c6';
+(node/*: any*/).hash = 'fce2413875ddc7a638df9aa1b9ccaad1';
 
 module.exports = node;
